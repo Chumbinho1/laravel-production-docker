@@ -1,0 +1,37 @@
+# Ignore dependency directories
+vendor/
+node_modules/
+
+# Ignore debug and log files
+npm-debug.log
+*.log
+
+# Ignore Docker-related files and folders
+Dockerfile
+docker-compose.yml
+docker/
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore environment files
+.env
+
+# Ignore test and storage files
+# tests/
+# storage/logs/
+# storage/framework/cache/
+# storage/framework/sessions/
+# storage/framework/views/
+
+# Ignore IDE and editor files
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore documentation and database files
+*.md
+*.sqlite

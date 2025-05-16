@@ -1,0 +1,71 @@
+services:
+    nginx:
+        container_name: nginx
+        build:
+            context: ../../
+            dockerfile: docker/production/nginx/Dockerfile
+            args:
+                WWWUSER: '${WWWUSER}'
+                WWWGROUP: '${WWWGROUP}'
+        environment:
+            - NODE_ENV={NODE_ENV}
+        volumes:
+            - 'storage_data:/var/www/storage:ro'
+        networks:
+            - app-network
+        ports:
+            - "80:80"
+        depends_on:
+            - php-fpm
+
+    php-fpm:
+        container_name: php-fpm
+        build:
+            context: ../../
+            dockerfile: docker/production/php-fpm/Dockerfile
+            args:
+                WWWUSER: '${WWWUSER}'
+                WWWGROUP: '${WWWGROUP}'
+        volumes:
+            - 'storage_data:/var/www/storage'
+        networks:
+            - app-network
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
+        depends_on:
+            - mysql
+
+    mysql:
+        container_name: mysql
+        image: 'mysql/mysql-server:8.0'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'db_data:/var/lib/mysql'
+        networks:
+            - app-network
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+
+volumes:
+    db_data:
+        driver: local
+    storage_data:
+        driver: local
+
+networks:
+    app-network:
+        driver: bridge
