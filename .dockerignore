@@ -18,13 +18,6 @@ docker/
 # Ignore environment files
 .env
 
-# Ignore test and storage files
-# tests/
-# storage/logs/
-# storage/framework/cache/
-# storage/framework/sessions/
-# storage/framework/views/
-
 # Ignore IDE and editor files
 .idea/
 *.swp

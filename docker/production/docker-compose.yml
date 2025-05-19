@@ -10,7 +10,8 @@ services:
         environment:
             - NODE_ENV={NODE_ENV}
         volumes:
-            - 'storage_data:/var/www/storage:ro'
+            - 'storage_data:/var/www/app/storage:ro'
+            - 'nginx_logs:/var/log/nginx'
         networks:
             - app-network
         ports:
@@ -27,7 +28,7 @@ services:
                 WWWUSER: '${WWWUSER}'
                 WWWGROUP: '${WWWGROUP}'
         volumes:
-            - 'storage_data:/var/www/storage'
+            - 'storage_data:/var/www/app/storage'
         networks:
             - app-network
         ports:
@@ -64,6 +65,8 @@ volumes:
     db_data:
         driver: local
     storage_data:
+        driver: local
+    nginx_logs:
         driver: local
 
 networks:
