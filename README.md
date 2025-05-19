@@ -34,6 +34,10 @@ This is a minimum Docker setup for running a Laravel application in a production
    ```
 6. Access the application:
    - Open your browser and go to `http://localhost:80` (or the port you specified in the `nginx/nginx.conf`).
+7. Stop the containers:
+   ```bash
+    docker-compose -f docker/production/docker-compose.yml --env-file .env.production down --remove-orphans
+   ```
 
 ## Customization
 You can customize the Nginx and PHP-FPM configurations by modifying the files in the `nginx` and `php-fpm` directories, respectively.
